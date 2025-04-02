@@ -12,7 +12,7 @@ The **Task Tracker CLI Application** is a command-line tool for managing tasks i
 
 ## File Structure
 
-```
+```go
 task-tracker-go/
 ├── main.go               # Entry point of the application
 ├── tasks/
@@ -29,6 +29,7 @@ task-tracker-go/
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone <repository-url>
    cd task-tracker-go
@@ -37,6 +38,7 @@ task-tracker-go/
 2. Install Go (if not already installed). Refer to the [official Go installation guide](https://golang.org/doc/install).
 
 3. Run the application:
+
    ```bash
    go run main.go <command>
    ```
@@ -46,53 +48,66 @@ task-tracker-go/
 ### Commands
 
 1. **Add a Task**
+
    ```bash
    go run main.go add <description> <status>
    ```
+
    - `<description>`: A brief description of the task.
    - `<status>`: The status of the task (`todo`, `in progress`, or `done`).
 
    Example:
+
    ```bash
    go run main.go add "Buy groceries" "todo"
    ```
 
 2. **List All Tasks**
+
    ```bash
    go run main.go list
    ```
 
 3. **Update a Task**
+
    ```bash
    go run main.go update <id> <description> <status>
    ```
+
    - `<id>`: The ID of the task to update.
    - `<description>`: The new description of the task.
    - `<status>`: The new status of the task.
 
    Example:
+
    ```bash
    go run main.go update 1 "Buy groceries and snacks" "in progress"
    ```
 
 4. **Delete a Task**
+
    ```bash
    go run main.go delete <id>
    ```
+
    - `<id>`: The ID of the task to delete.
 
    Example:
+
    ```bash
    go run main.go delete 1
    ```
 
 5. **Get a Task by ID**
+
    ```bash
    go run main.go get <id>
    ```
+
    - `<id>`: The ID of the task to retrieve.
 
    Example:
+
    ```bash
    go run main.go get 1
    ```
@@ -100,6 +115,7 @@ task-tracker-go/
 ## Task Data Format
 
 Tasks are stored in a JSON file (`tasks.json`) in the following format:
+
 ```json
 {
   "tasks": [

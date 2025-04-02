@@ -36,7 +36,7 @@ func main() {
 		tasks := taskList.GetTasks() // Use tasks.TaskList methods
 		if len(tasks) == 0 {
 			fmt.Println("No tasks found.")
-			return
+			return 
 		}
 		fmt.Println("Tasks:")
 		for _, task := range tasks {
