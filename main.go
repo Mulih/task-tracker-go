@@ -78,7 +78,8 @@ func main() {
 			return
 		}
 		description := os.Args[2]
-		taskList.AddTask(description)
+		status := os.Args[3]
+		taskList.AddTask(description, status)
 		fmt.Printf("Task added: %s\n", description)
 	case "list":
 		tasks := taskList.GetTasks()
@@ -91,8 +92,8 @@ func main() {
 			fmt.Printf("ID: %d, Description: %s, Status: %s, CreatedAt: %s, UpdatedAt: %s\n", task.ID, task.Description, task.Status, task.CreatedAt.Format(time.RFC3339), task.UpdatedAt.Format(time.RFC3339))
 		}
 	case "update":
-		if len(os.Args) < 5 {
-			fmt.Println("Please provide a task ID, description, and status.")
+		if len(os.Args) < 4 {
+			fmt.Println("Please provide a task ID and status.")
 			return
 		}
 		id, err := strconv.Atoi(os.Args[2])
@@ -103,7 +104,22 @@ func main() {
 		description := os.Args[3]
 		status := os.Args[4]
 		if taskList.UpdateTask(id, description, status) {
-			 fmt.Printf("Task %d updated: %s, Status: %s\n", id, description, status)
+			fmt.Printf("Task %d updated: %s, Status: %s\n", id, description, status)
+		} else {
+			fmt.Println("Task not found.")
+		}
+	case "delete":
+		if len(os.Args) < 3 {
+			fmt.Println("Please provide a task ID to delete.")
+			return
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Invalid task ID:", os.Args[2])
+			return
+		}
+		if taskList.DeleteTask(id) {
+			fmt.Printf("Task %d deleted.\n", id)
 		} else {
 			fmt.Println("Task not found.")
 		}
