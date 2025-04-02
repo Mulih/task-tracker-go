@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -89,7 +90,24 @@ func main() {
 		for _, task := range tasks {
 			fmt.Printf("ID: %d, Description: %s, Status: %s, CreatedAt: %s, UpdatedAt: %s\n", task.ID, task.Description, task.Status, task.CreatedAt.Format(time.RFC3339), task.UpdatedAt.Format(time.RFC3339))
 		}
-	}
+	case "update":
+		if len(os.Args) < 5 {
+			fmt.Println("Please provide a task ID, description, and status.")
+			return
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Invalid task ID:", os.Args[2])
+			return
+		}
+		description := os.Args[3]
+		status := os.Args[4]
+		if taskList.UpdateTask(id, description, status) {
+			 fmt.Printf("Task %d updated: %s, Status: %s\n", id, description, status)
+		} else {
+			fmt.Println("Task not found.")
+		}
 
+	}
 
 }
