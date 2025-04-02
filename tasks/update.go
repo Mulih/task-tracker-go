@@ -1,9 +1,8 @@
-package main
+package tasks
 
 import "time"
 
 // UpdateTask updates the description and/or status of a task identified by its ID.
-// It returns true if the task was found and updated, or false if the task was not found.
 func (tl *TaskList) UpdateTask(id int, description string, status string) bool {
 	for i, task := range tl.Tasks {
 		if task.ID == id {

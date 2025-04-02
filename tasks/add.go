@@ -1,10 +1,8 @@
-package main
+package tasks
 
 import "time"
 
-// AddTask adds a new task to the task list with the given description.
-// It initializes the task with a unique ID, sets its status to "todo",
-// and records the current time as both CreatedAt and UpdatedAt timestamps.
+// AddTask adds a new task to the task list with the given description and status.
 func (tl *TaskList) AddTask(description string, status string) {
 	task := Task{
 		ID:          tl.NextID,

@@ -1,4 +1,4 @@
-package main
+package tasks
 
 // Lists the tasks and their details.
 func (tl *TaskList) GetTasks() []Task {

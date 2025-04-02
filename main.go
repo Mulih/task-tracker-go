@@ -1,66 +1,17 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
 	"time"
+
+	"task-tracker/tasks" // Import the tasks package
 )
-
-// Task represents a task with an ID, description, status, and timestamps.
-// The ID is unique for each task, and the status can be "todo", "in progress", or "done".
-// The CreatedAt and UpdatedAt fields store the timestamps of when the task was created and last updated.
-
-type Task struct {
-	ID          int       `json:"id"`
-	Description string    `json:"description"`
-	Status      string    `json:"status"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-}
-
-// The TaskList struct contains a slice of tasks and the next available ID for new tasks.
-type TaskList struct {
-	Tasks  []Task `json:"tasks"`
-	NextID int    `json:"next_id"`
-}
-
-const taskFile = "tasks.json"
-
-// SaveTasks saves the current task list to a JSON file.
-// It creates the file if it does not exist and overwrites it if it does.
-// The file is created in the current working directory.
-func (tl *TaskList) SaveTasks() error {
-	file, err := os.Create(taskFile)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	encoder := json.NewEncoder(file)
-	return encoder.Encode(tl)
-}
-
-// LoadTasks loads tasks from the JSON file into the TaskList struct.
-// If the file does not exist, it returns nil without error.
-func (tl *TaskList) LoadTasks() error {
-	file, err := os.Open(taskFile)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return nil
-		}
-		return err
-	}
-	defer file.Close()
-
-	decoder := json.NewDecoder(file)
-	return decoder.Decode(tl)
-}
 
 func main() {
 	// Load tasks from the file at the start
-	taskList := &TaskList{}
+	taskList := &tasks.TaskList{} // Use tasks.TaskList
 	if err := taskList.LoadTasks(); err != nil {
 		panic(err)
 	}
@@ -79,10 +30,10 @@ func main() {
 		}
 		description := os.Args[2]
 		status := os.Args[3]
-		taskList.AddTask(description, status)
+		taskList.AddTask(description, status) // Use tasks.TaskList methods
 		fmt.Printf("Task added: %s\n", description)
 	case "list":
-		tasks := taskList.GetTasks()
+		tasks := taskList.GetTasks() // Use tasks.TaskList methods
 		if len(tasks) == 0 {
 			fmt.Println("No tasks found.")
 			return
@@ -103,7 +54,7 @@ func main() {
 		}
 		description := os.Args[3]
 		status := os.Args[4]
-		if taskList.UpdateTask(id, description, status) {
+		if taskList.UpdateTask(id, description, status) { // Use tasks.TaskList methods
 			fmt.Printf("Task %d updated: %s, Status: %s\n", id, description, status)
 		} else {
 			fmt.Println("Task not found.")
@@ -118,8 +69,24 @@ func main() {
 			fmt.Println("Invalid task ID:", os.Args[2])
 			return
 		}
-		if taskList.DeleteTask(id) {
+		if taskList.DeleteTask(id) { // Use tasks.TaskList methods
 			fmt.Printf("Task %d deleted.\n", id)
+		} else {
+			fmt.Println("Task not found.")
+		}
+	case "get":
+		if len(os.Args) < 3 {
+			fmt.Println("Please provide a task ID.")
+			return
+		}
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Invalid task ID:", os.Args[2])
+			return
+		}
+		task := taskList.GetTaskByID(id) // Use tasks.TaskList methods
+		if task != nil {
+			fmt.Printf("Task found: ID: %d, Description: %s, Status: %s, CreatedAt: %s, UpdatedAt: %s\n", task.ID, task.Description, task.Status, task.CreatedAt.Format(time.RFC3339), task.UpdatedAt.Format(time.RFC3339))
 		} else {
 			fmt.Println("Task not found.")
 		}
